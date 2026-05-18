@@ -1,0 +1,30 @@
+name: Heartbeat Commit (Keep Green)
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  
+  workflow_dispatch: 
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure Git User
+        run: |
+          git config --local user.email "thoe9008@outlook.com"
+          git config --local user.name "SparkUiX"
+
+      - name: Create Empty Commit
+        run: |
+          git pull --rebase origin main
+          
+          git commit --allow-empty -m "🟢 Keep the green streak alive!"
+          
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
